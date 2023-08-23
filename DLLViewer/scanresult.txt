@@ -1,0 +1,1134 @@
+VSTINFO (32-bit process)
+--------------------------------
+[3rd_Bass.dll]
+Unique ID = 3bas
+94 parameters
+Param 0 = 5 Band 10000hz
+Param 1 = 5 Band 1000hz
+Param 2 = 5 Band 250hz
+Param 3 = 5 Band 4000hz
+Param 4 = 5 Band 80hz
+Param 5 = 5 Band On
+Param 6 = Amp Drive
+Param 7 = Amp Drive On
+Param 8 = Amp Eq High
+Param 9 = Amp Eq Low
+Param 10 = Amp Eq Mid
+Param 11 = Amp Hi Freq
+Param 12 = Amp Hi Q
+Param 13 = Amp Low Freq
+Param 14 = Amp Low Pass
+Param 15 = Amp Low Q
+Param 16 = Amp Mid Freq
+Param 17 = Amp Mid Q
+Param 18 = Amp Volume
+Param 19 = Bass+ Amount
+Param 20 = Bass+ Freq
+Param 21 = Bass+ On
+Param 22 = Bass+ Orig Bass
+Param 23 = Bass+ Volume
+Param 24 = Chorus Delay
+Param 25 = Chorus Depth
+Param 26 = Chorus Mix
+Param 27 = Chorus On
+Param 28 = Chorus Rate
+Param 29 = Comp Input
+Param 30 = Comp Out
+Param 31 = Delay Damping
+Param 32 = Delay Feedback
+Param 33 = Delay Level
+Param 34 = Delay On
+Param 35 = Delay Time
+Param 36 = Exciter Freq
+Param 37 = Exciter Harm Level
+Param 38 = Exciter Hi Level
+Param 39 = Exciter In Level
+Param 40 = Exciter Low Level
+Param 41 = Exciter On
+Param 42 = Flanger Delay
+Param 43 = Flanger Depth
+Param 44 = Flanger Feedback
+Param 45 = Flanger Mix
+Param 46 = Flanger On
+Param 47 = Flanger Rate
+Param 48 = Limiter On
+Param 49 = Phaser Depth
+Param 50 = Phaser Feedback
+Param 51 = Phaser Max Hz
+Param 52 = Phaser Min Hz
+Param 53 = Phaser Mix
+Param 54 = Phaser On
+Param 55 = Phaser Rate
+Param 56 = Phaser Stages
+Param 57 = Reverb Damping
+Param 58 = Reverb Length
+Param 59 = Reverb Level
+Param 60 = Reverb On
+Param 61 = Reverb Size
+Param 62 = Synth Amp Attack
+Param 63 = Synth Amp Decay
+Param 64 = Synth Amp Hold
+Param 65 = Synth Amp Sustain
+Param 66 = Synth Amp Volume
+Param 67 = Synth Filter Attack Cut
+Param 68 = Synth Filter Attack Res
+Param 69 = Synth Filter Cut
+Param 70 = Synth Filter Decay Cut
+Param 71 = Synth Filter Decay Res
+Param 72 = Synth Filter Env Cut
+Param 73 = Synth Filter Env Res
+Param 74 = Synth Filter Hold Cut
+Param 75 = Synth Filter On
+Param 76 = Synth Filter Res
+Param 77 = Synth Filter Slope
+Param 78 = Synth Filter Sustain Cut
+Param 79 = Synth Filter Type
+Param 80 = Synth Threshold
+Param 81 = Trem Depth
+Param 82 = Trem On
+Param 83 = Trem Rate
+Param 84 = Trem Wave
+Param 85 = 
+Param 86 = 
+Param 87 = 
+Param 88 = 
+Param 89 = 
+Param 90 = 
+Param 91 = 
+Param 92 = 
+Param 93 = 
+
+--------------------------------
+[AradazAmp_Crunch_v1.4.dll]
+Unique ID = AAm1
+8 parameters
+Param 0 = Input
+Param 1 = Gain
+Param 2 = Low
+Param 3 = Midle
+Param 4 = Treble
+Param 5 = Volume
+Param 6 = Cabinet Type
+Param 7 = Cabinet
+
+--------------------------------
+[ArtsAcousticReverb.dll]
+Unique ID = AARb
+22 parameters
+Param 0 = DryLevel
+Param 1 = WetLevel
+Param 2 = Rev Type
+Param 3 = Decay
+Param 4 = Room Size
+Param 5 = Diffusion
+Param 6 = Density
+Param 7 = Attack
+Param 8 = Spread
+Param 9 = Predelay
+Param 10 = Hi Ratio
+Param 11 = Mid Ratio
+Param 12 = Lo Ratio
+Param 13 = Cross Lo-Mid
+Param 14 = Cross Mid-Hi
+Param 15 = Room Width
+Param 16 = Modulation
+Param 17 = Echo Int
+Param 18 = Echo Size
+Param 19 = Lo Cut
+Param 20 = Hi Cut
+Param 21 = Quality
+
+--------------------------------
+[Big Tick NastyShaper.dll]
+Unique ID = BTNS
+11 parameters
+Param 0 = Pre-Gain
+Param 1 = Post-Gain
+Param 2 = WS1
+Param 3 = WS2
+Param 4 = WS3
+Param 5 = WS4
+Param 6 = WS5
+Param 7 = WS6
+Param 8 = WS7
+Param 9 = WS8
+Param 10 = Oversample
+
+--------------------------------
+[Classic Auto-Filter.dll]
+Unique ID = fq78
+15 parameters
+Param 0 = Filter
+Param 1 = Frequency
+Param 2 = Feedback
+Param 3 = Rate
+Param 4 = R. Hold
+Param 5 = Sync.
+Param 6 = T.S.N
+Param 7 = T.S.D
+Param 8 = Spread
+Param 9 = LFO Depth
+Param 10 = Attack
+Param 11 = Release
+Param 12 = Env Depth
+Param 13 = Mix
+Param 14 = Level
+
+--------------------------------
+[Classic Chorus.dll]
+Unique ID = 4233
+7 parameters
+Param 0 = Range
+Param 1 = Fine
+Param 2 = Rate
+Param 3 = Depth
+Param 4 = Mix
+Param 5 = Level
+Param 6 = Spread
+
+--------------------------------
+[Classic Compressor.dll]
+Unique ID = o132
+6 parameters
+Param 0 = Threshold
+Param 1 = Ratio
+Param 2 = Knee
+Param 3 = Attack
+Param 4 = Release
+Param 5 = Level
+
+--------------------------------
+[Classic Delay.dll]
+Unique ID = 6f75
+14 parameters
+Param 0 = Pan
+Param 1 = Mono
+Param 2 = Type
+Param 3 = Sync
+Param 4 = T.S.N.
+Param 5 = T.S.D.
+Param 6 = Time
+Param 7 = Feedback
+Param 8 = Ping-Pong
+Param 9 = Quality
+Param 10 = Low Cut
+Param 11 = Hi Cut
+Param 12 = Mix
+Param 13 = Level
+
+--------------------------------
+[Classic EQ.dll]
+Unique ID = q1i8
+23 parameters
+Param 0 = Left In
+Param 1 = Right In
+Param 2 = Left Out
+Param 3 = Right Out
+Param 4 = 20Hz L
+Param 5 = 63Hz L
+Param 6 = 200Hz L
+Param 7 = 630Hz L
+Param 8 = 2kHz L
+Param 9 = 6.3kHz L
+Param 10 = 20kHz L
+Param 11 = 20Hz R
+Param 12 = 63Hz R
+Param 13 = 200Hz R
+Param 14 = 630Hz R
+Param 15 = 2kHz R
+Param 16 = 6.3kHz R
+Param 17 = 20kHz R
+Param 18 = Warm
+Param 19 = Saturation
+Param 20 = Link
+Param 21 =                                                                                                                                                                                                                                                                 
+Param 22 =                                                                                                                                                                                                                                                                 
+
+--------------------------------
+[Classic Flanger.dll]
+Unique ID = c618
+8 parameters
+Param 0 = Delay
+Param 1 = Rate
+Param 2 = Depth
+Param 3 = Feedback
+Param 4 = Mix
+Param 5 = Level
+Param 6 = Spread
+Param 7 = Sync.
+
+--------------------------------
+[Classic Phaser.dll]
+Unique ID = c934
+9 parameters
+Param 0 = Stages
+Param 1 = Upper
+Param 2 = Rate
+Param 3 = Sync.
+Param 4 = Depth
+Param 5 = Spread
+Param 6 = Feedback
+Param 7 = Mix
+Param 8 = Level
+
+--------------------------------
+[Classic Reverb.dll]
+Unique ID = 6z9v
+8 parameters
+Param 0 = Size
+Param 1 = Damping
+Param 2 = Predelay
+Param 3 = Hi Damp
+Param 4 = Lo Cut
+Param 5 = Early Ref.
+Param 6 = Mix
+Param 7 = Level
+
+--------------------------------
+[DanfoqueFX.dll]
+Unique ID = 2222
+2 parameters
+Param 0 = Feedback
+Param 1 = Modulation
+
+--------------------------------
+[dominion v1.2.dll]
+Unique ID = SEdo
+22 parameters
+Param 0 = input
+Param 1 = attack
+Param 2 = atk length
+Param 3 = sustain
+Param 4 = sus length
+Param 5 = output
+Param 6 = stat <> dyn
+Param 7 = soft <> hard
+Param 8 = hf tune
+Param 9 = hf level
+Param 10 = bypass
+Param 11 = mono
+Param 12 = atk x 2
+Param 13 = sus x 2
+Param 14 =                                                                                                                                                                                                                                                                 
+Param 15 =                                                                                                                                                                                                                                                                 
+Param 16 =                                                                                                                                                                                                                                                                 
+Param 17 =                                                                                                                                                                                                                                                                 
+Param 18 =                                                                                                                                                                                                                                                                 
+Param 19 =                                                                                                                                                                                                                                                                 
+Param 20 =                                                                                                                                                                                                                                                                 
+Param 21 =                                                                                                                                                                                                                                                                 
+
+--------------------------------
+[FA36_Full.dll]
+Unique ID = FA3f
+322 parameters
+Param 0 = Amp Auto Eq
+Param 1 = Amp Channel
+Param 2 = Amp ClnAmp
+Param 3 = Amp ClnChub 
+Param 4 = Amp ClnLevel
+Param 5 = Amp DrvAmp
+Param 6 = Amp DrvChub 
+Param 7 = Amp DrvGain
+Param 8 = Amp EqHigh
+Param 9 = Amp EqLow
+Param 10 = Amp EqMid
+Param 11 = Amp EqType
+Param 12 = Amp In Mono\Srereo
+Param 13 = Amp MicDistance
+Param 14 = Amp MicPosition
+Param 15 = Amp MicTrim
+Param 16 = Amp On
+Param 17 = Amp Presence
+Param 18 = Amp PwrAmp
+Param 19 = Amp SpkBypass
+Param 20 = Amp SpkType
+Param 21 = Amp Volume
+Param 22 = FX1 1 Select
+Param 23 = FX1 1Chrs Delay
+Param 24 = FX1 1Chrs Depth
+Param 25 = FX1 1Chrs Mix
+Param 26 = FX1 1Chrs On
+Param 27 = FX1 1Chrs Rate
+Param 28 = FX1 1Comp Atk
+Param 29 = FX1 1Comp Level
+Param 30 = FX1 1Comp On
+Param 31 = FX1 1Comp Ratio
+Param 32 = FX1 1Comp Rel
+Param 33 = FX1 1Comp Thres
+Param 34 = FX1 1EQ 4000hz
+Param 35 = FX1 1Eq 1000hz
+Param 36 = FX1 1Eq 100hz
+Param 37 = FX1 1Eq 250hz
+Param 38 = FX1 1Eq 8000hz
+Param 39 = FX1 1Eq On
+Param 40 = FX1 1Flng Delay
+Param 41 = FX1 1Flng Depth
+Param 42 = FX1 1Flng Fdbk
+Param 43 = FX1 1Flng Mix
+Param 44 = FX1 1Flng On
+Param 45 = FX1 1Flng Rate
+Param 46 = FX1 1OD Chub
+Param 47 = FX1 1OD Gain
+Param 48 = FX1 1OD Level
+Param 49 = FX1 1OD On
+Param 50 = FX1 1OD Tone
+Param 51 = FX1 1OD Type
+Param 52 = FX1 1Phsr Center
+Param 53 = FX1 1Phsr Depth
+Param 54 = FX1 1Phsr Fdbk
+Param 55 = FX1 1Phsr Mix
+Param 56 = FX1 1Phsr On
+Param 57 = FX1 1Phsr Rate
+Param 58 = FX1 1Phsr Stage
+Param 59 = FX1 1Trem Depth
+Param 60 = FX1 1Trem On
+Param 61 = FX1 1Trem Rate
+Param 62 = FX1 1Trem Wave
+Param 63 = FX1 1Wah Auto Adj
+Param 64 = FX1 1Wah Man\Auto
+Param 65 = FX1 1Wah Mod
+Param 66 = FX1 1Wah On
+Param 67 = FX1 1Wah Rate
+Param 68 = FX1 1Wah Wah
+Param 69 = FX1 2 Select
+Param 70 = FX1 2Chrs Delay
+Param 71 = FX1 2Chrs Depth
+Param 72 = FX1 2Chrs Mix
+Param 73 = FX1 2Chrs On
+Param 74 = FX1 2Chrs Rate
+Param 75 = FX1 2Dly Filter
+Param 76 = FX1 2Dly L Fdbk
+Param 77 = FX1 2Dly L Time
+Param 78 = FX1 2Dly Level
+Param 79 = FX1 2Dly On
+Param 80 = FX1 2EQ 4000hz
+Param 81 = FX1 2Eq 1000hz
+Param 82 = FX1 2Eq 100hz
+Param 83 = FX1 2Eq 250hz
+Param 84 = FX1 2Eq 8000hz
+Param 85 = FX1 2Eq On
+Param 86 = FX1 2Flng Delay
+Param 87 = FX1 2Flng Depth
+Param 88 = FX1 2Flng Fdbk
+Param 89 = FX1 2Flng Mix
+Param 90 = FX1 2Flng On
+Param 91 = FX1 2Flng Rate
+Param 92 = FX1 2Phsr Center
+Param 93 = FX1 2Phsr Depth
+Param 94 = FX1 2Phsr Fdbk
+Param 95 = FX1 2Phsr Mix
+Param 96 = FX1 2Phsr On
+Param 97 = FX1 2Phsr Rate
+Param 98 = FX1 2Phsr Stage
+Param 99 = FX1 2Pitch Bend
+Param 100 = FX1 2Pitch Buffer
+Param 101 = FX1 2Pitch Invert
+Param 102 = FX1 2Pitch MDepth
+Param 103 = FX1 2Pitch Mix
+Param 104 = FX1 2Pitch Mod
+Param 105 = FX1 2Pitch On
+Param 106 = FX1 2Pitch Rate
+Param 107 = FX1 2Pitch Semi
+Param 108 = FX1 2Pitch Type
+Param 109 = FX1 2Wah Auto Adj
+Param 110 = FX1 2Wah Man\Auto
+Param 111 = FX1 2Wah Mod
+Param 112 = FX1 2Wah On
+Param 113 = FX1 2Wah Rate
+Param 114 = FX1 2Wah Wah
+Param 115 = FX1 3 Select
+Param 116 = FX1 3Comp Atk
+Param 117 = FX1 3Comp Level
+Param 118 = FX1 3Comp On
+Param 119 = FX1 3Comp Ratio
+Param 120 = FX1 3Comp Rel
+Param 121 = FX1 3Comp Thres
+Param 122 = FX1 3Dly Filter
+Param 123 = FX1 3Dly L Fdbk
+Param 124 = FX1 3Dly L Time
+Param 125 = FX1 3Dly Level
+Param 126 = FX1 3Dly On
+Param 127 = FX1 3EQ 4000hz
+Param 128 = FX1 3Eq 1000hz
+Param 129 = FX1 3Eq 100hz
+Param 130 = FX1 3Eq 250hz
+Param 131 = FX1 3Eq 8000hz
+Param 132 = FX1 3Eq On
+Param 133 = FX1 3OD Chub
+Param 134 = FX1 3OD Gain
+Param 135 = FX1 3OD Level
+Param 136 = FX1 3OD On
+Param 137 = FX1 3OD Tone
+Param 138 = FX1 3OD Type
+Param 139 = FX1 3Pitch Bend
+Param 140 = FX1 3Pitch Buffer
+Param 141 = FX1 3Pitch Invert
+Param 142 = FX1 3Pitch MDepth
+Param 143 = FX1 3Pitch Mix
+Param 144 = FX1 3Pitch Mod
+Param 145 = FX1 3Pitch On
+Param 146 = FX1 3Pitch Rate
+Param 147 = FX1 3Pitch Semi
+Param 148 = FX1 3Pitch Type
+Param 149 = FX1 3Trem Depth
+Param 150 = FX1 3Trem On
+Param 151 = FX1 3Trem Rate
+Param 152 = FX1 3Trem Wave
+Param 153 = FX2 1 Select
+Param 154 = FX2 1Chrs Delay
+Param 155 = FX2 1Chrs Depth
+Param 156 = FX2 1Chrs Mix
+Param 157 = FX2 1Chrs On
+Param 158 = FX2 1Chrs Rate
+Param 159 = FX2 1Chrs Spread
+Param 160 = FX2 1Comp Atk
+Param 161 = FX2 1Comp Level
+Param 162 = FX2 1Comp On
+Param 163 = FX2 1Comp Ratio
+Param 164 = FX2 1Comp Rel
+Param 165 = FX2 1Comp Thres
+Param 166 = FX2 1EQ 4000hz
+Param 167 = FX2 1Eq 10000hz
+Param 168 = FX2 1Eq 1000hz
+Param 169 = FX2 1Eq 250hz
+Param 170 = FX2 1Eq 80hz
+Param 171 = FX2 1Eq Level
+Param 172 = FX2 1Eq On
+Param 173 = FX2 1Flng Delay
+Param 174 = FX2 1Flng Depth
+Param 175 = FX2 1Flng Fdbk
+Param 176 = FX2 1Flng HP
+Param 177 = FX2 1Flng Mix
+Param 178 = FX2 1Flng On
+Param 179 = FX2 1Flng Rate
+Param 180 = FX2 1PEq Level
+Param 181 = FX2 1PEq On
+Param 182 = FX2 1PEq1 Freq
+Param 183 = FX2 1PEq1 Gain
+Param 184 = FX2 1PEq1 Q
+Param 185 = FX2 1PEq2 Freq
+Param 186 = FX2 1PEq2 Gain
+Param 187 = FX2 1PEq2 Q
+Param 188 = FX2 1PEq3 Freq
+Param 189 = FX2 1PEq3 Gain
+Param 190 = FX2 1PEq3 Q
+Param 191 = FX2 1Phsr Center
+Param 192 = FX2 1Phsr Depth
+Param 193 = FX2 1Phsr Fdbk
+Param 194 = FX2 1Phsr HP
+Param 195 = FX2 1Phsr Mix
+Param 196 = FX2 1Phsr On
+Param 197 = FX2 1Phsr Rate
+Param 198 = FX2 1Phsr Stage
+Param 199 = FX2 2 Select
+Param 200 = FX2 2Chrs Delay
+Param 201 = FX2 2Chrs Depth
+Param 202 = FX2 2Chrs Mix
+Param 203 = FX2 2Chrs On
+Param 204 = FX2 2Chrs Rate
+Param 205 = FX2 2Chrs Spread
+Param 206 = FX2 2Dly Filter
+Param 207 = FX2 2Dly L Fdbk
+Param 208 = FX2 2Dly L Time
+Param 209 = FX2 2Dly Level
+Param 210 = FX2 2Dly On
+Param 211 = FX2 2Dly R Fdbk
+Param 212 = FX2 2Dly R Time
+Param 213 = FX2 2Dly X Fdbk
+Param 214 = FX2 2EQ 4000hz
+Param 215 = FX2 2Eq 10000hz
+Param 216 = FX2 2Eq 1000hz
+Param 217 = FX2 2Eq 250hz
+Param 218 = FX2 2Eq 80hz
+Param 219 = FX2 2Eq Level
+Param 220 = FX2 2Eq On
+Param 221 = FX2 2Flng Delay
+Param 222 = FX2 2Flng Depth
+Param 223 = FX2 2Flng Fdbk
+Param 224 = FX2 2Flng HP
+Param 225 = FX2 2Flng Mix
+Param 226 = FX2 2Flng On
+Param 227 = FX2 2Flng Rate
+Param 228 = FX2 2PEq Level
+Param 229 = FX2 2PEq On
+Param 230 = FX2 2PEq1 Freq
+Param 231 = FX2 2PEq1 Gain
+Param 232 = FX2 2PEq1 Q
+Param 233 = FX2 2PEq2 Freq
+Param 234 = FX2 2PEq2 Gain
+Param 235 = FX2 2PEq2 Q
+Param 236 = FX2 2PEq3 Freq
+Param 237 = FX2 2PEq3 Gain
+Param 238 = FX2 2PEq3 Q
+Param 239 = FX2 2Rvb Arena
+Param 240 = FX2 2Rvb Damp
+Param 241 = FX2 2Rvb Decay
+Param 242 = FX2 2Rvb Delay
+Param 243 = FX2 2Rvb E Reflect
+Param 244 = FX2 2Rvb Level
+Param 245 = FX2 2Rvb On
+Param 246 = FX2 2Rvb Width
+Param 247 = FX2 3 Select
+Param 248 = FX2 3Comp Atk
+Param 249 = FX2 3Comp Level
+Param 250 = FX2 3Comp On
+Param 251 = FX2 3Comp Ratio
+Param 252 = FX2 3Comp Rel
+Param 253 = FX2 3Comp Thres
+Param 254 = FX2 3Dly Filter
+Param 255 = FX2 3Dly L Fdbk
+Param 256 = FX2 3Dly L Time
+Param 257 = FX2 3Dly Level
+Param 258 = FX2 3Dly On
+Param 259 = FX2 3Dly R Fdbk
+Param 260 = FX2 3Dly R Time
+Param 261 = FX2 3Dly X Fdbk
+Param 262 = FX2 3EQ 4000hz
+Param 263 = FX2 3Eq 10000hz
+Param 264 = FX2 3Eq 1000hz
+Param 265 = FX2 3Eq 250hz
+Param 266 = FX2 3Eq 80hz
+Param 267 = FX2 3Eq Level
+Param 268 = FX2 3Eq On
+Param 269 = FX2 3PEq Level
+Param 270 = FX2 3PEq On
+Param 271 = FX2 3PEq1 Freq
+Param 272 = FX2 3PEq1 Gain
+Param 273 = FX2 3PEq1 Q
+Param 274 = FX2 3PEq2 Freq
+Param 275 = FX2 3PEq2 Gain
+Param 276 = FX2 3PEq2 Q
+Param 277 = FX2 3PEq3 Freq
+Param 278 = FX2 3PEq3 Gain
+Param 279 = FX2 3PEq3 Q
+Param 280 = FX2 3Phsr Center
+Param 281 = FX2 3Phsr Depth
+Param 282 = FX2 3Phsr Fdbk
+Param 283 = FX2 3Phsr HP
+Param 284 = FX2 3Phsr Mix
+Param 285 = FX2 3Phsr On
+Param 286 = FX2 3Phsr Rate
+Param 287 = FX2 3Phsr Stage
+Param 288 = FX2 3Rvb Arena
+Param 289 = FX2 3Rvb Damp
+Param 290 = FX2 3Rvb Decay
+Param 291 = FX2 3Rvb Delay
+Param 292 = FX2 3Rvb E Reflect
+Param 293 = FX2 3Rvb Level
+Param 294 = FX2 3Rvb On
+Param 295 = FX2 3Rvb Width
+Param 296 = Gate Attack
+Param 297 = Gate Decay
+Param 298 = Gate On\Off
+Param 299 = Gate Possition
+Param 300 = Gate Release
+Param 301 = Gate Sustain
+Param 302 = Gate Threshold
+Param 303 = Gate Trg Release
+Param 304 = I\O Meters On
+Param 305 = Limiter On\Off
+Param 306 = Limiter Threshold
+Param 307 = MIDI Learn
+Param 308 = MIDI Reset
+Param 309 = MIDI Vol #07
+Param 310 = Panel Switch
+Param 311 = Sync Chrs
+Param 312 = Sync Chrs
+Param 313 = Sync Chrs
+Param 314 = Sync Chrs
+Param 315 = Sync Chrs
+Param 316 = Sync Chrs
+Param 317 = Sync Chrs
+Param 318 = Sync Chrs
+Param 319 = Sync Source
+Param 320 = Sync Tap
+Param 321 = 
+
+--------------------------------
+[freqshifter.dll]
+Unique ID = FBFS
+15 parameters
+Param 0 = Link L+R
+Param 1 = Volume L
+Param 2 = Volume R
+Param 3 = Mix L
+Param 4 = Mix R
+Param 5 = Mode L
+Param 6 = Mode R
+Param 7 = Freq Range
+Param 8 = Freq Min L
+Param 9 = Freq Min R
+Param 10 = Freq Max L
+Param 11 = Freq Max R
+Param 12 = LFO Waveform
+Param 13 = LFO Rate
+Param 14 = Sync to Host
+
+--------------------------------
+[freqshifter.vst3.dll]
+Error loading library. vst\freqshifter.vst3.dll is not a valid Win32 application 193
+Library might be a 64 bit which is not supported
+
+--------------------------------
+[freqshifter64.dll]
+Error loading library. vst\freqshifter64.dll is not a valid Win32 application 193
+Library might be a 64 bit which is not supported
+
+--------------------------------
+[JoaCHIP Battle Compressor 32bit.dll]
+Unique ID = X3ud
+13 parameters
+Param 0 = Compressor mode
+Param 1 = Threshold
+Param 2 = Ratio
+Param 3 = Attack
+Param 4 = Release
+Param 5 = Sensitivity bass
+Param 6 = Sensitivity lows
+Param 7 = Sensitivity mids
+Param 8 = Sensitivity highs
+Param 9 = Output gain
+Param 10 = Stereo link
+Param 11 = Output limiter
+Param 12 = Listen sidechain
+
+--------------------------------
+[JoaCHIP Battle Compressor.dll]
+Error loading library. vst\JoaCHIP Battle Compressor.dll is not a valid Win32 application 193
+Library might be a 64 bit which is not supported
+
+--------------------------------
+[JoaCHIP Chopper 32bit.dll]
+Unique ID = Lxm2
+2 parameters
+Param 0 = Time offset
+Param 1 = Crossfade
+
+--------------------------------
+[JoaCHIP Chopper.dll]
+Error loading library. vst\JoaCHIP Chopper.dll is not a valid Win32 application 193
+Library might be a 64 bit which is not supported
+
+--------------------------------
+[JoaCHIP Enceladus EQ 32bit.dll]
+Unique ID = Ix3g
+24 parameters
+Param 0 = Boost 1
+Param 1 = Drive 1
+Param 2 = Frequency 1
+Param 3 = Bandwidth 1
+Param 4 = Mode 1
+Param 5 = Dark 1
+Param 6 = Boost 2
+Param 7 = Drive 2
+Param 8 = Frequency 2
+Param 9 = Bandwidth 2
+Param 10 = Mode 2
+Param 11 = Dark 2
+Param 12 = Boost 3
+Param 13 = Drive 3
+Param 14 = Frequency 3
+Param 15 = Bandwidth 3
+Param 16 = Mode 3
+Param 17 = Dark 3
+Param 18 = Boost 4
+Param 19 = Drive 4
+Param 20 = Frequency 4
+Param 21 = Bandwidth 4
+Param 22 = Mode 4
+Param 23 = Dark 4
+
+--------------------------------
+[JoaCHIP Enceladus EQ.dll]
+Error loading library. vst\JoaCHIP Enceladus EQ.dll is not a valid Win32 application 193
+Library might be a 64 bit which is not supported
+
+--------------------------------
+[JoaCHIP Mars Distortion 32bit.dll]
+Unique ID = MrDi
+7 parameters
+Param 0 = Input gain
+Param 1 = Amount
+Param 2 = Mode
+Param 3 = Low cut
+Param 4 = Cannon
+Param 5 = High cut
+Param 6 = Oversampling
+
+--------------------------------
+[JoaCHIP Mars Distortion.dll]
+Error loading library. vst\JoaCHIP Mars Distortion.dll is not a valid Win32 application 193
+Library might be a 64 bit which is not supported
+
+--------------------------------
+[JoaCHIP Mercury Filter 32bit.dll]
+Unique ID = Wax8
+28 parameters
+Param 0 = Highpass frequency
+Param 1 = Highpass resonance
+Param 2 = Highpass mode
+Param 3 = Lowpass frequency
+Param 4 = Lowpass resonance
+Param 5 = Lowpass mode
+Param 6 = Link frequencies
+Param 7 = Inertia
+Param 8 = LFO 1 speed
+Param 9 = LFO 1 phase
+Param 10 = LFO 1 shape
+Param 11 = LFO 1 curve
+Param 12 = LFO 1 sync type
+Param 13 = LFO 1 > HP freq
+Param 14 = LFO 1 > LP freq
+Param 15 = LFO 1 > HP reso
+Param 16 = LFO 1 > LP reso
+Param 17 = LFO 1 > LFO 2
+Param 18 = LFO 2 speed
+Param 19 = LFO 2 phase
+Param 20 = LFO 2 shape
+Param 21 = LFO 2 curve
+Param 22 = LFO 2 sync type
+Param 23 = LFO 2 > HP freq
+Param 24 = LFO 2 > LP freq
+Param 25 = LFO 2 > HP reso
+Param 26 = LFO 2 > LP reso
+Param 27 = LFO 2 > LFO 1
+
+--------------------------------
+[JoaCHIP Mercury Filter.dll]
+Error loading library. vst\JoaCHIP Mercury Filter.dll is not a valid Win32 application 193
+Library might be a 64 bit which is not supported
+
+--------------------------------
+[JoaCHIP PodCastHelper 32bit.dll]
+Unique ID = Lbbp
+1 parameters
+Param 0 = Mode
+
+--------------------------------
+[JoaCHIP PodCastHelper.dll]
+Error loading library. vst\JoaCHIP PodCastHelper.dll is not a valid Win32 application 193
+Library might be a 64 bit which is not supported
+
+--------------------------------
+[JoaCHIP Quick Meter 32bit.dll]
+Unique ID = D7zw
+0 parameters
+
+--------------------------------
+[JoaCHIP Quick Meter.dll]
+Error loading library. vst\JoaCHIP Quick Meter.dll is not a valid Win32 application 193
+Library might be a 64 bit which is not supported
+
+--------------------------------
+[JoaCHIP Uranus Delay 32bit.dll]
+Unique ID = U23n
+16 parameters
+Param 0 = Delay gain
+Param 1 = Stereo width
+Param 2 = Dry/wet
+Param 3 = Feedback
+Param 4 = Delay A
+Param 5 = Delay B
+Param 6 = Delay mode
+Param 7 = Units
+Param 8 = Highpass freq.
+Param 9 = Lowpass freq.
+Param 10 = EQ boost
+Param 11 = EQ freq.
+Param 12 = LFO amount
+Param 13 = LFO speed
+Param 14 = Chorus
+Param 15 = Compressor
+
+--------------------------------
+[JoaCHIP Uranus Delay.dll]
+Error loading library. vst\JoaCHIP Uranus Delay.dll is not a valid Win32 application 193
+Library might be a 64 bit which is not supported
+
+--------------------------------
+[Laidback-er.dll]
+Unique ID = EXTe
+2 parameters
+Param 0 = 
+Param 1 = 
+
+--------------------------------
+[mda ePiano.dll]
+Unique ID = MDAe
+12 parameters
+Param 0 = Decay   
+Param 1 = Release 
+Param 2 = Hardness
+Param 3 = Treble  
+Param 4 = Pan/Trem
+Param 5 = LFO Rate
+Param 6 = Vel Sens
+Param 7 = Stereo  
+Param 8 = Max Poly
+Param 9 = Tune    
+Param 10 = Detune  
+Param 11 = Overdrve
+
+--------------------------------
+[ModernAmplifier.dll]
+Unique ID = MLA5
+9 parameters
+Param 0 = Ceiling-Knob
+Param 1 = Gain-Knob
+Param 2 = In Out-Switch
+Param 3 = Input-Knob
+Param 4 = Knee-Switch
+Param 5 = Meter-Switch
+Param 6 = Power-Switch
+Param 7 = Process-Switch
+Param 8 = Threshold-Knob
+
+--------------------------------
+[ModernDeepPurple.dll]
+Unique ID = MDP2
+14 parameters
+Param 0 = Knob
+Param 1 = Knob
+Param 2 = Knob
+Param 3 = Knob
+Param 4 = Knob
+Param 5 = Knob
+Param 6 = Knob
+Param 7 = Knob
+Param 8 = Knob
+Param 9 = Knob
+Param 10 = Knob
+Param 11 = Mode-Switch
+Param 12 = Output-Knob
+Param 13 = Power-Button
+
+--------------------------------
+[ModernEqualizer.dll]
+Unique ID = MdEQ
+15 parameters
+Param 0 = F1-Knob
+Param 1 = F2-Knob
+Param 2 = F3-Knob
+Param 3 = F4-Knob
+Param 4 = Gain1-Knob
+Param 5 = Gain2-Knob
+Param 6 = Gain3-Knob
+Param 7 = Gain4-Knob
+Param 8 = Meter-Switch
+Param 9 = Output-Knob
+Param 10 = Power-Switch
+Param 11 = Q1-Knob
+Param 12 = Q2-Knob
+Param 13 = Q3-Knob
+Param 14 = Q4-Knob
+
+--------------------------------
+[ModernEqualizerBlack.dll]
+Unique ID = MEQB
+15 parameters
+Param 0 = F1-Knob
+Param 1 = F2-Knob
+Param 2 = F3-Knob
+Param 3 = F4-Knob
+Param 4 = Gain1-Knob
+Param 5 = Gain2-Knob
+Param 6 = Gain3-Knob
+Param 7 = Gain4-Knob
+Param 8 = Meter-Switch
+Param 9 = Output-Knob
+Param 10 = Power-Switch
+Param 11 = Q1-Knob
+Param 12 = Q2-Knob
+Param 13 = Q3-Knob
+Param 14 = Q4-Knob
+
+--------------------------------
+[PitchShifter.dll]
+Unique ID = RuPs
+3 parameters
+Param 0 = ShiftAmt
+Param 1 = Window
+Param 2 = OverSamp
+
+--------------------------------
+[TB4005.dll]
+Unique ID = JTB0
+9 parameters
+Param 0 = Volume
+Param 1 = Cutoff
+Param 2 = Resonanc
+Param 3 = Decay
+Param 4 = Length
+Param 5 = Chord
+Param 6 = Waveform
+Param 7 = Pulsewid
+Param 8 = Finetune
+
+--------------------------------
+[Temperature.dll]
+Unique ID = jTmp
+2 parameters
+Param 0 = Temperature
+Param 1 = Highpass
+
+--------------------------------
+[Tube Driver TD-1X.dll]
+Unique ID = TD1X
+5 parameters
+Param 0 = Foot Switch
+Param 1 = GAIN
+Param 2 = LEVEL
+Param 3 = TONE
+Param 4 = 
+
+--------------------------------
+[WNAdditiveSynth.dll]
+Unique ID = WNAd
+110 parameters
+Param 0 = Reserved
+Param 1 = OSC1Frame
+Param 2 = Phase1
+Param 3 = Reserved
+Param 4 = Reserved
+Param 5 = FF1Frame
+Param 6 = FFBias1
+Param 7 = Emphasis1
+Param 8 = OSC2Frame
+Param 9 = Reserved
+Param 10 = Phase2
+Param 11 = Reserved
+Param 12 = Reserved
+Param 13 = FF2Frame
+Param 14 = FFBias2
+Param 15 = Emphasis2
+Param 16 = Reserved
+Param 17 = Reserved
+Param 18 = OSC Mix/Balance
+Param 19 = Limit
+Param 20 = FMLevel
+Param 21 = RMLevel
+Param 22 = Amp Attack
+Param 23 = Amp Decay
+Param 24 = Amp Sustain
+Param 25 = Amp Release
+Param 26 = ENV1 Attack
+Param 27 = ENV1 Decay
+Param 28 = ENV1 Sustain
+Param 29 = ENV1 Release
+Param 30 = ENV2 Attack
+Param 31 = ENV2 Decay
+Param 32 = ENV2 Sustain
+Param 33 = ENV2 Release
+Param 34 = Reserved
+Param 35 = Reserved
+Param 36 = ASS.1 Amount
+Param 37 = Reserved
+Param 38 = Reserved
+Param 39 = ASS.2 Amount
+Param 40 = Reserved
+Param 41 = Reserved
+Param 42 = ASS. 3 Amount
+Param 43 = Reserved
+Param 44 = Reserved
+Param 45 = ASS. 4 Amount
+Param 46 = Reserved
+Param 47 = Reserved
+Param 48 = ASS. 5 Amount
+Param 49 = Reserved
+Param 50 = Reserved
+Param 51 = ASS. 6 Amount
+Param 52 = Reserved
+Param 53 = Reserved
+Param 54 = ASS. 7 Amount
+Param 55 = Reserved
+Param 56 = Reserved
+Param 57 = ASS. 8 Amount
+Param 58 = Reserved
+Param 59 = LFO1Rate
+Param 60 = Reserved
+Param 61 = LFO2Rate
+Param 62 = Reserved
+Param 63 = EvenOdd
+Param 64 = Pan
+Param 65 = Reserved
+Param 66 = Reserved
+Param 67 = Reserved
+Param 68 = Reserved
+Param 69 = Reserved
+Param 70 = Reserved
+Param 71 = Reserved
+Param 72 = Reserved
+Param 73 = Reserved
+Param 74 = Reserved
+Param 75 = Reserved
+Param 76 = Reserved
+Param 77 = Reserved
+Param 78 = Reserved
+Param 79 = Reserved
+Param 80 = Reserved
+Param 81 = Reserved
+Param 82 = Reserved
+Param 83 = Reserved
+Param 84 = Reserved
+Param 85 = Reserved
+Param 86 = Reserved
+Param 87 = Reserved
+Param 88 = Reserved
+Param 89 = Reserved
+Param 90 = Reserved
+Param 91 = Reserved
+Param 92 = Reserved
+Param 93 = Reserved
+Param 94 = Reserved
+Param 95 = Reserved
+Param 96 = Reserved
+Param 97 = Reserved
+Param 98 = Reserved
+Param 99 = Reserved
+Param 100 = Reserved
+Param 101 = Reserved
+Param 102 = Reserved
+Param 103 = Reserved
+Param 104 = Reserved
+Param 105 = Reserved
+Param 106 = Reserved
+Param 107 = Reserved
+Param 108 = Reserved
+Param 109 = MasterVol
+
+--------------------------------
+[X-Amp.dll]
+Unique ID = XAMP
+31 parameters
+Param 0 = 
+Param 1 = 
+Param 2 = 
+Param 3 = A
+Param 4 = B
+Param 5 = BASS
+Param 6 = BRIGHT
+Param 7 = BYP. AMP
+Param 8 = C
+Param 9 = DRIVE
+Param 10 = GAIN
+Param 11 = GAIN
+Param 12 = HI
+Param 13 = LEVEL
+Param 14 = LO
+Param 15 = MID
+Param 16 = MIDI
+Param 17 = MIX
+Param 18 = PRESENCE
+Param 19 = STANDBY
+Param 20 = TONE
+Param 21 = TREBLE
+Param 22 = TUBE
+Param 23 = VOLUME
+Param 24 = Waveshaper
+Param 25 = Waveshaper
+Param 26 = Waveshaper
+Param 27 = Waveshaper
+Param 28 = Waveshaper
+Param 29 = Waveshaper
+Param 30 = 
