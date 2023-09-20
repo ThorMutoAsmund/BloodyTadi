@@ -43,7 +43,7 @@ namespace DLLViewer
         private IntPtr aeffectPtr;
         private AEffect aeffect;
         private static List<string> availableSymbols = new List<string>();
-        private static string symbolEnumerationResult;
+        //private static string symbolEnumerationResult;
 
 
         private SetParameterDelegate setParameter;
@@ -86,7 +86,7 @@ namespace DLLViewer
             }
 
             // Enumerate symbols
-            effect.EnumerateSymbols();
+            // effect.EnumerateSymbols();
 
             // Cleanup.
             DbgHelp.SymCleanup(effect.currentProcess);
@@ -115,18 +115,18 @@ namespace DLLViewer
             {
                 Console.WriteLine("main proc address is null. Cannot load module.");
 
-                if (symbolEnumerationResult != null)
-                {
-                    Console.WriteLine($"Failed to enumerate symbols. {symbolEnumerationResult}");
-                }
-                else
-                {
-                    Console.WriteLine("Available symbols are:");
-                    foreach (var symbol in availableSymbols)
-                    {
-                        Console.WriteLine(symbol);
-                    }
-                }
+                //if (symbolEnumerationResult != null)
+                //{
+                //    Console.WriteLine($"Failed to enumerate symbols. {symbolEnumerationResult}");
+                //}
+                //else
+                //{
+                //    Console.WriteLine("Available symbols are:");
+                //    foreach (var symbol in availableSymbols)
+                //    {
+                //        Console.WriteLine(symbol);
+                //    }
+                //}
 
                 return null;
             }
@@ -213,28 +213,28 @@ namespace DLLViewer
             return label.ToString();
         }
 
-        public void Test()
-        {
-            var value = 0.42F;
-            setParameter(this.aeffectPtr, 2, value);
-            var test = getParameter(this.aeffectPtr, 2);
-            Console.WriteLine($"{value.ToString(CultureInfo.InvariantCulture)} = {test.ToString(CultureInfo.InvariantCulture)}");
-        }
+        //public void Test()
+        //{
+        //    var value = 0.42F;
+        //    setParameter(this.aeffectPtr, 2, value);
+        //    var test = getParameter(this.aeffectPtr, 2);
+        //    Console.WriteLine($"{value.ToString(CultureInfo.InvariantCulture)} = {test.ToString(CultureInfo.InvariantCulture)}");
+        //}
 
-        public void EnumerateSymbols()
-        {
-            availableSymbols.Clear();
+        //public void EnumerateSymbols()
+        //{
+        //    availableSymbols.Clear();
 
-            // Enumerate symbols. For every symbol the callback method EnumSyms is called
-            if (DbgHelp.SymEnumerateSymbols64(this.currentProcess, this.baseOfDll, EnumSyms, IntPtr.Zero) == false)
-            {
-                symbolEnumerationResult = new Win32Exception(Marshal.GetLastWin32Error()).Message ?? "Unknown error";
-            }
-            else
-            {
-                symbolEnumerationResult = null;
-            }
-        }
+        //    // Enumerate symbols. For every symbol the callback method EnumSyms is called
+        //    if (DbgHelp.SymEnumerateSymbols64(this.currentProcess, this.baseOfDll, EnumSyms, IntPtr.Zero) == false)
+        //    {
+        //        symbolEnumerationResult = new Win32Exception(Marshal.GetLastWin32Error()).Message ?? "Unknown error";
+        //    }
+        //    else
+        //    {
+        //        symbolEnumerationResult = null;
+        //    }
+        //}
 
         public void Open()
         {

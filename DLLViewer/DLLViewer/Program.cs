@@ -30,7 +30,6 @@ namespace DLLViewer
         static Dictionary<int, string> outputDriverNames = new Dictionary<int, string>();
         static int? outputDeviceNum;
         static int? inputDeviceNum;
-        static AudioFileReader audioFile;
 
         [STAThread]
         static void Main(string[] args)
@@ -40,9 +39,16 @@ namespace DLLViewer
             {
                 Console.WriteLine("Work with VST DLLs.");
                 Console.WriteLine();
-                Console.WriteLine("VSTINFO [path][filename]");
-                Console.WriteLine("VSTINFO /o");
-                Console.WriteLine("VSTINFO /i");
+                Console.WriteLine("VSTINFO [path][filename] [/O] [/I] [/L]");
+                Console.WriteLine("  /O      List output devices");
+                Console.WriteLine("  /I      List input devices");
+                Console.WriteLine("  /O:n    Select output device n");
+                Console.WriteLine("  /I:n    Select input device n");
+                Console.WriteLine("  /L      List VST plugins with details in given path (and/or matching filename)");
+                Console.WriteLine("  /DW     Use WaveOut");
+                Console.WriteLine("  /DD     Use DirectSound");
+                Console.WriteLine("  /DA     Use ASIO");
+                Console.WriteLine("  /DS     Use WASAPI");
                 return;
             }
 
@@ -55,7 +61,6 @@ namespace DLLViewer
                 Console.WriteLine("VSTINFO (32-bit process)");
             }
 
-            audioFile = new AudioFileReader(@"c:\temp\example.mp3");
             fileNames = new List<string>();
             pathNames = new List<string>();
 
@@ -76,14 +81,14 @@ namespace DLLViewer
                     {
                         case "o":
                             {
-                                if (param.Length == 1)
+                                if (param.Length <= 2)
                                 {
                                     listOutputDevices = true;
                                     enterActiveMode = false;
                                 }
                                 else
                                 {
-                                    param = param.Substring(1);
+                                    param = param.Substring(2);
                                     if (!Int32.TryParse(param, out var outputDeviceNum))
                                     {
                                         Console.WriteLine($"Error parsing {param}.");
@@ -94,14 +99,14 @@ namespace DLLViewer
                             }
                         case "i":
                             {
-                                if (param.Length == 1)
+                                if (param.Length <= 2)
                                 {
                                     listInputDevices = true;
                                     enterActiveMode = false;
                                 }
                                 else
                                 {
-                                    param = param.Substring(1);
+                                    param = param.Substring(2);
                                     if (!Int32.TryParse(param, out var inputDeviceNum))
                                     {
                                         Console.WriteLine($"Error parsing {param}.");
@@ -118,6 +123,7 @@ namespace DLLViewer
                             }
                         case "d":
                             {
+                                param = param.ToLowerInvariant();
                                 if (param == "dw")
                                 {
                                     audioSystem = AudioSystem.WaveOut;
@@ -207,14 +213,12 @@ namespace DLLViewer
                 }
             }
 
-            ListDevices(DataFlow.Render, listOutputDevices);
+            EnumerateDevices(DataFlow.Render, listOutputDevices);
             
-            ListDevices(DataFlow.Capture, listInputDevices && (!listOutputDevices || (audioSystem != AudioSystem.DirectSound && audioSystem != AudioSystem.ASIO)));
+            EnumerateDevices(DataFlow.Capture, listInputDevices && (!listOutputDevices || (audioSystem != AudioSystem.DirectSound && audioSystem != AudioSystem.ASIO)));
 
             if (listVSTs)
             {
-                Console.WriteLine(String.Join(",", fileNames.ToArray()));
-
                 foreach (var path in pathNames)
                 {
                     fileNames.AddRange(Directory.GetFiles(path));
@@ -233,7 +237,8 @@ namespace DLLViewer
             switch (audioSystem)
             {
                 case AudioSystem.ASIO:
-                    AsioPlayback();
+                    Console.WriteLine($"Using {audioSystem}");
+                    new Playback().Asio(outputDeviceNum, inputDeviceNum, outputDriverNames);
                     break;
                 case AudioSystem.WASAPI:
                     Console.WriteLine($"{audioSystem} not supported yet");
@@ -242,104 +247,12 @@ namespace DLLViewer
                     Console.WriteLine($"{audioSystem} not supported yet");
                     break;
                 case AudioSystem.WaveOut:
-                    Console.WriteLine($"{audioSystem} not supported yet");
+                    Console.WriteLine($"Using {audioSystem}");
+                    new Playback().WaveOut(outputDeviceNum, inputDeviceNum, outputDriverNames);
                     break;
             }
 
         }
-
-        private static void AsioPlayback()
-        {
-            outputDeviceNum = outputDeviceNum ?? 0;
-            inputDeviceNum = inputDeviceNum ?? 0;
-
-
-            if (!outputDriverNames.ContainsKey(outputDeviceNum.Value))
-            {
-                Console.WriteLine($"Output device {outputDeviceNum.Value} not found.");
-                return;
-            }
-
-            // https://github.com/naudio/NAudio/blob/master/Docs/AsioRecording.md
-
-            var asioOut = new AsioOut(outputDriverNames[outputDeviceNum.Value]);
-
-            var inputChannelCount = asioOut.DriverInputChannelCount;
-            var outputChannelCount = asioOut.DriverOutputChannelCount;
-
-            var inputChannelOffset = 0;
-            var recordChannelCount = 2;
-            var sampleRate = 44100;
-            var outputChannelOffset = 0;
-
-            var ms = new MemoryStream();
-            var rs = new RawSourceWaveStream(ms, new WaveFormat(sampleRate, 16, 1));
-
-            //var samples[] = new Sa
-
-            unsafe void OnAsioOutAudioAvailable(object sender, AsioAudioAvailableEventArgs e)
-            {
-                // e.InputBuffers.Length == 2
-                // e.OutputBuffers.Length == 2
-                // e.SamplesPerBuffer == 512
-
-                for (int n = 0; n < e.SamplesPerBuffer; ++n)
-                {                    
-                    var value = *((float*)e.InputBuffers[0] + n);
-                    *((float*)e.OutputBuffers[0] + n) = value;
-                }
-
-                //var dest = new byte[e.SamplesPerBuffer*4];
-                //Console.WriteLine(e.AsioSampleType);
-
-                //Marshal.Copy(e.InputBuffers[0], dest, 0, e.SamplesPerBuffer * 4);
-                //Marshal.Copy(dest, 0, e.OutputBuffers[0], e.SamplesPerBuffer * 4);
-                //Marshal.Copy(e.InputBuffers[1], dest, 0, e.SamplesPerBuffer * 4);
-                //Marshal.Copy(dest, 0, e.OutputBuffers[1], e.SamplesPerBuffer * 4);
-
-                //Buffer.MemoryCopy((void*)e.InputBuffers[0], (void*)e.OutputBuffers[0], e.SamplesPerBuffer, e.SamplesPerBuffer);
-                //Buffer.MemoryCopy((void*)e.InputBuffers[1], (void*)e.OutputBuffers[1], e.SamplesPerBuffer, e.SamplesPerBuffer);
-                e.WrittenToOutputBuffers = true;
-
-                //e.OutputBuffers
-                //Marshal.Copy(e.InputBuffers[i], buf, 0, e.SamplesPerBuffer);
-
-                //Console.WriteLine($"{e.SamplesPerBuffer}  {e.InputBuffers.Length}  {e.OutputBuffers.Length}");
-
-                //Marshal.Copy(e.InputBuffers[i], buf, 0, e.SamplesPerBuffer);
-
-                //byte[] buf = new byte[e.SamplesPerBuffer];
-                //for (int i = 0; i < e.InputBuffers.Length; i++)
-                //{
-                //    Marshal.Copy(e.InputBuffers[i], buf, 0, e.SamplesPerBuffer);
-                //    //Aggiungo in coda al buffer
-                //    buffer.AddSamples(buf, 0, buf.Length);
-                //}
-                //var samples = e.GetAsInterleavedSamples(samples);
-                //foreach (var s in samples)
-                //{
-                //    //ms.Write(");
-                //}
-                //writer.WriteSamples(samples, 0, samples.Length);
-                // Write recorded data to sample provider
-            }
-
-
-            asioOut.ChannelOffset = outputChannelOffset;
-            asioOut.InputChannelOffset = inputChannelOffset;
-            asioOut.AudioAvailable += OnAsioOutAudioAvailable;
-            asioOut.InitRecordAndPlayback(audioFile, recordChannelCount, sampleRate);
-
-            //asioOut.Init(audioFile);
-
-            asioOut.Play();
-
-            Console.ReadLine();
-
-            asioOut.Stop();
-            asioOut.Dispose();
-        }
-
         private static void ListVSTs()
         {
             var first = true;
@@ -372,7 +285,7 @@ namespace DLLViewer
             }
         }
 
-        private static void ListDevices(DataFlow dataFlow, bool showInfo)
+        private static void EnumerateDevices(DataFlow dataFlow, bool showInfo)
         {
             switch (audioSystem)
             {
