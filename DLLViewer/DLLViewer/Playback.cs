@@ -18,35 +18,108 @@ namespace DLLViewer
     // https://github.com/naudio/NAudio/blob/master/Docs/AsioPlayback.md
     // https://markheath.net/post/how-to-record-and-play-audio-at-same
 
+    class SavingWaveProvider : IWaveProvider, IDisposable
+    {
+        private readonly IWaveProvider sourceWaveProvider;
+        private Playback playback;
+        //private readonly WaveFileWriter writer;
+        private bool isWriterDisposed;
+
+        public SavingWaveProvider(IWaveProvider sourceWaveProvider, Playback playback)
+        {
+            this.sourceWaveProvider = sourceWaveProvider;
+            this.playback = playback;
+            //writer = new WaveFileWriter(wavFilePath, sourceWaveProvider.WaveFormat);
+        }
+
+        public int Read(byte[] buffer, int offset, int count)
+        {
+            var read = sourceWaveProvider.Read(buffer, offset, count);
+            if (count > 0 && !isWriterDisposed)
+            {
+                //writer.Write(buffer, offset, read);
+            }
+            if (count == 0)
+            {
+                Dispose(); // auto-dispose in case users forget
+            }
+            return read;
+        }
+
+        public WaveFormat WaveFormat { get { return sourceWaveProvider.WaveFormat; } }
+
+        public void Dispose()
+        {
+            if (!isWriterDisposed)
+            {
+                isWriterDisposed = true;
+                //writer.Dispose();
+            }
+        }
+    }
+
     public class Playback
     {
         private AudioFileReader audioFile;
+        private Dictionary<int, string> outputDriverNames;
+        public List<AudioNode> Chain { get; private set; }
+        public Dictionary<string, string> VSTs { get; private set; }
 
-        public Playback()
+        public Playback(Dictionary<int, string> outputDriverNames, List<AudioNode> chain, Dictionary<string, string> vsts)
         {
             this.audioFile = new AudioFileReader(@"c:\temp\example.mp3");
+            this.outputDriverNames = outputDriverNames;
+            this.Chain = chain;
+            this.VSTs = vsts;
         }
 
-        public void WaveOut(int? outputDeviceNum, int? inputDeviceNum, Dictionary<int, string> outputDriverNames, bool playTestSample = true)
+        public void WaveOut(int? outputDeviceNum, int? inputDeviceNum, bool playTestSample = true)
         {
-            using (var outputDevice = new WaveOutEvent())
+            if (playTestSample)
             {
-                outputDevice.Init(this.audioFile);
-                outputDevice.Play();
+                using (var outputDevice = new WaveOutEvent())
+                {
+                    outputDevice.Init(this.audioFile);
+                    outputDevice.Play();
 
-                Console.ReadLine();
+                    Console.ReadLine();
 
-                outputDevice.Stop();
-                outputDevice.Dispose();
+                    outputDevice.Stop();
+                    outputDevice.Dispose();
+                    return;
+                }
+            }
 
-                //while (outputDevice.PlaybackState == PlaybackState.Playing)
-                //{
-                //    Thread.Sleep(1000);
-                //}
+            using (var recorder = new WaveInEvent())
+            {
+                var bufferedWaveProvider = new BufferedWaveProvider(recorder.WaveFormat);
+                var savingWaveProvider = new SavingWaveProvider(bufferedWaveProvider, this);
+
+                void RecorderOnDataAvailable(object sender, WaveInEventArgs waveInEventArgs)
+                {
+                    bufferedWaveProvider.AddSamples(waveInEventArgs.Buffer, 0, waveInEventArgs.BytesRecorded);
+                }
+
+                recorder.DataAvailable += RecorderOnDataAvailable;
+
+                // set up playback
+                using (var player = new WaveOut())
+                {
+                    player.Init(savingWaveProvider);
+
+                    player.Play();
+                    recorder.StartRecording();
+
+                    Console.ReadLine();
+
+                    recorder.StopRecording();
+                    player.Stop();
+                    savingWaveProvider.Dispose();
+                }
             }
         }
 
-        public void Asio(int? outputDeviceNum, int? inputDeviceNum, Dictionary<int, string> outputDriverNames, bool playTestSample = false)
+        public void Asio(int? outputDeviceNum, int? inputDeviceNum, bool playTestSample = false)
         {
             outputDeviceNum = outputDeviceNum ?? 0;
             inputDeviceNum = inputDeviceNum ?? 0;

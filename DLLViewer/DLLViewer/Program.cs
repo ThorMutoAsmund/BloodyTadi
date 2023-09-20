@@ -28,8 +28,10 @@ namespace DLLViewer
         static List<string> pathNames;
         static Dictionary<int,string> inputDriverNames = new Dictionary<int, string>();
         static Dictionary<int, string> outputDriverNames = new Dictionary<int, string>();
+        static Dictionary<string, string> vsts = new Dictionary<string, string>();
         static int? outputDeviceNum;
         static int? inputDeviceNum;
+        static List<AudioNode> chain = new List<AudioNode>();
 
         [STAThread]
         static void Main(string[] args)
@@ -49,6 +51,7 @@ namespace DLLViewer
                 Console.WriteLine("  /DD     Use DirectSound");
                 Console.WriteLine("  /DA     Use ASIO");
                 Console.WriteLine("  /DS     Use WASAPI");
+                Console.WriteLine("  /V:id   Add VST plugin with id to the chain");
                 return;
             }
 
@@ -95,7 +98,7 @@ namespace DLLViewer
                                         return;
                                     }
                                 }
-                                continue;
+                                break;
                             }
                         case "i":
                             {
@@ -113,13 +116,13 @@ namespace DLLViewer
                                         return;
                                     }
                                 }
-                                continue;
+                                break;
                             }
                         case "l" when param.Length == 1:
                             {
                                 listVSTs = true;
                                 enterActiveMode = false;
-                                continue;
+                                break;
                             }
                         case "d":
                             {
@@ -146,6 +149,21 @@ namespace DLLViewer
                                     return;
                                 }
 
+                                break;
+                            }
+                        case "v":
+                            {
+                                if (param.Length <= 2)
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    chain.Add(new AudioNode()
+                                    {
+                                        UniqueID = param.Substring(2)
+                                    });
+                                }
                                 continue;
                             }
                         default:
@@ -217,14 +235,12 @@ namespace DLLViewer
             
             EnumerateDevices(DataFlow.Capture, listInputDevices && (!listOutputDevices || (audioSystem != AudioSystem.DirectSound && audioSystem != AudioSystem.ASIO)));
 
-            if (listVSTs)
+            foreach (var path in pathNames)
             {
-                foreach (var path in pathNames)
-                {
-                    fileNames.AddRange(Directory.GetFiles(path));
-                }
-                ListVSTs();
+                fileNames.AddRange(Directory.GetFiles(path));
             }
+
+            EnumerateVSTs(listVSTs);
 
             if (enterActiveMode)
             {
@@ -234,11 +250,13 @@ namespace DLLViewer
 
         private static void ActiveMode()
         {
+            var playback = new Playback(outputDriverNames, chain, vsts);
+
             switch (audioSystem)
             {
                 case AudioSystem.ASIO:
                     Console.WriteLine($"Using {audioSystem}");
-                    new Playback().Asio(outputDeviceNum, inputDeviceNum, outputDriverNames);
+                    playback.Asio(outputDeviceNum, inputDeviceNum, playTestSample: false);
                     break;
                 case AudioSystem.WASAPI:
                     Console.WriteLine($"{audioSystem} not supported yet");
@@ -248,23 +266,27 @@ namespace DLLViewer
                     break;
                 case AudioSystem.WaveOut:
                     Console.WriteLine($"Using {audioSystem}");
-                    new Playback().WaveOut(outputDeviceNum, inputDeviceNum, outputDriverNames);
+                    playback.WaveOut(outputDeviceNum, inputDeviceNum, playTestSample: false);
                     break;
             }
 
         }
-        private static void ListVSTs()
+        private static void EnumerateVSTs(bool showInfo)
         {
             var first = true;
             foreach (var filePath in fileNames)
             {
-                if (!first)
+                if (showInfo)
                 {
-                    Console.WriteLine();
+                    if (!first)
+                    {
+                        Console.WriteLine();
+                    }
+                    first = false;
+                    Console.WriteLine($"--------------------------------");
+                    Console.WriteLine($"[{Path.GetFileName(filePath)}]");
+
                 }
-                first = false;
-                Console.WriteLine($"--------------------------------");
-                Console.WriteLine($"[{Path.GetFileName(filePath)}]");
 
                 var effect = AudioEffect.Create(filePath);
 
@@ -273,14 +295,17 @@ namespace DLLViewer
                     continue;
                 }
 
-                Console.WriteLine($"Unique ID = {effect.UniqueID}");
-
-                Console.WriteLine($"{effect.NumParams} parameters");
-                for (UInt32 i = 0; i < effect.NumParams; ++i)
+                if (showInfo)
                 {
-                    Console.WriteLine($"Param {i} = {effect.GetParamName(i)}");
+                    Console.WriteLine($"Unique ID = {effect.UniqueID}");
+                    Console.WriteLine($"{effect.NumParams} parameters");
+                    for (UInt32 i = 0; i < effect.NumParams; ++i)
+                    {
+                        Console.WriteLine($"Param {i} = {effect.GetParamName(i)}");
+                    }
                 }
 
+                vsts[effect.UniqueID] = filePath;
                 //effect.Open();
             }
         }

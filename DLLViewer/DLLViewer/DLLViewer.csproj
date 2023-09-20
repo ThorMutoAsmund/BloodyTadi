@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioEffect.cs" />
+    <Compile Include="AudioNode.cs" />
     <Compile Include="Kernel32.cs" />
     <Compile Include="DbgHelp.cs" />
     <Compile Include="Playback.cs" />
