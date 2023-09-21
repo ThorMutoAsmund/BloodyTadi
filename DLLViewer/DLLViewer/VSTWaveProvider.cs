@@ -30,12 +30,8 @@ namespace DLLViewer
             int outIndex = offset;
             for (int n = 0; n < bytesRead; n += 4)
             {
-                var f = BitConverter.ToUInt32(sourceBuffer, n);
-                //long f2 = ((f & 0x000000FF)<<24) +
-                //    ((f & 0x0000FF00) << 8) +
-                //    ((f & 0x00FF0000) >> 8) +
-                //    ((f & 0xFF000000) >> 24);
-                buffer[outIndex++] = (f / (65536f * 65536f))-0.5f; // HERE!
+                var f = BitConverter.ToSingle(sourceBuffer, n);
+                buffer[outIndex++] = f;// (f - 32768) / 32768f; // HERE!
             }
             return bytesRead / 4;
         }
@@ -122,6 +118,10 @@ namespace DLLViewer
                         buffer[i] = this.boutL[i / 2];
                         buffer[i+1] = this.boutR[i / 2];
                     }
+                }
+                else
+                {
+                    Array.Copy(this.boutL, buffer, count);
                 }
 
                 read = count;

@@ -76,6 +76,7 @@ namespace DLLViewer
             bool listOutputDevices = false;
             bool listInputDevices = false;
             bool listVSTs = false;
+            bool skipRest = false;
 
             foreach (var arg in args)
             {
@@ -85,6 +86,11 @@ namespace DLLViewer
 
                     switch (param.Substring(0, 1).ToLowerInvariant())
                     {
+                        case "-":
+                            {
+                                skipRest = true;
+                                break;
+                            }
                         case "o":
                             {
                                 if (param.Length <= 2)
@@ -240,6 +246,11 @@ namespace DLLViewer
                             Console.WriteLine($"File not found {arg}.");
                         }
                     }
+                }
+
+                if (skipRest)
+                {
+                    break;
                 }
             }
 
