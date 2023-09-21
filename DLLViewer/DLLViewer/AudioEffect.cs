@@ -38,8 +38,8 @@ namespace DLLViewer
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate void ProcessDelegate(IntPtr effect, IntPtr inputs, IntPtr outputs, UInt32 sampleframes);
-        //delegate void ProcessDelegate(IntPtr effect, IntPtr inputs, IntPtr outputs, UInt32 sampleframes);
 
+        private int numChannels = 2;
         private string filePath;
         private int hModule;
         private IntPtr currentProcess;
@@ -47,6 +47,9 @@ namespace DLLViewer
         private IntPtr aeffectPtr;
         private AEffect aeffect;
         private static List<string> availableSymbols = new List<string>();
+        private unsafe float** inp;
+        private unsafe float** outp;
+        private int currentSize;
         //private static string symbolEnumerationResult;
 
 
@@ -63,6 +66,8 @@ namespace DLLViewer
         public AudioEffect(string filePath)
         {
             this.filePath = filePath;
+            
+            PrepareBuffers();
         }
 
         public static AudioEffect Create(string filePath)
@@ -266,38 +271,35 @@ namespace DLLViewer
 
         public void VstProcess()
         {
-            //process(this.aeffectPtr, IntPtr inputs, IntPtr outputs, UInt32 sampleframes);
         }
 
-        public unsafe void VstProcessReplacing(float[][] inputs, float[][] outputs, UInt32 sampleframes)
+        private unsafe void PrepareBuffers()
         {
-            //inputs = (float**)malloc(sizeof(float**) * numChannels);
-            //outputs = (float**)malloc(sizeof(float**) * numChannels);
-            //for (int channel = 0; channel < numChannels; channel++)
-            //{
-            //    inputs[i] = (float*)malloc(sizeof(float*) * blocksize);
-            //    outputs[i] = (float*)malloc(sizeof(float*) * blocksize);
-            //}
+            this.inp = (float**)Marshal.AllocHGlobal(numChannels * Marshal.SizeOf<IntPtr>());
+            this.outp = (float**)Marshal.AllocHGlobal(numChannels * Marshal.SizeOf<IntPtr>());
+        }
 
-            var numChannels = 1;
+        public unsafe void VstProcessReplacing(float[] inputLeft, float[] inputRight, float[] outputLeft, float[] outputRight, UInt32 sampleframes)
+        {
             var size = (int)sampleframes * Marshal.SizeOf<float>();
 
-            float** inp = (float**)Marshal.AllocHGlobal(numChannels * Marshal.SizeOf<IntPtr>());
+            if (this.inp[0] == null || this.currentSize != size)
+            {
+                inp[0] = (float*)Marshal.AllocHGlobal(size);
+                inp[1] = (float*)Marshal.AllocHGlobal(size);
+                outp[0] = (float*)Marshal.AllocHGlobal(size);
+                outp[1] = (float*)Marshal.AllocHGlobal(size);
 
-            inp[0] = (float*)Marshal.AllocHGlobal(size);
-            inp[1] = (float*)Marshal.AllocHGlobal(size);
-            Marshal.Copy(inputs[0], 0, (IntPtr)(inp[0]), (int)sampleframes);
-            Marshal.Copy(inputs[1], 0, (IntPtr)(inp[1]), (int)sampleframes);
+                this.currentSize = size;
+            }
 
-            float** outp = (float**)Marshal.AllocHGlobal(numChannels * Marshal.SizeOf<IntPtr>());
-            outp[0] = (float*)Marshal.AllocHGlobal(size);
-            outp[1] = (float*)Marshal.AllocHGlobal(size);
+            Marshal.Copy(inputLeft, 0, (IntPtr)(inp[0]), (int)sampleframes);
+            Marshal.Copy(inputRight, 0, (IntPtr)(inp[1]), (int)sampleframes);
 
-            //processReplacing(this.aeffectPtr, (IntPtr)(inp[0]), (IntPtr)(outp[0]), sampleframes);
             processReplacing(this.aeffectPtr, (IntPtr)inp, (IntPtr)outp, sampleframes);
 
-            Marshal.Copy((IntPtr)(outp[0]), outputs[0], 0, (int)sampleframes);
-            Marshal.Copy((IntPtr)(outp[1]), outputs[1], 0, (int)sampleframes);
+            Marshal.Copy((IntPtr)(outp[0]), outputLeft, 0, (int)sampleframes);
+            Marshal.Copy((IntPtr)(outp[1]), outputRight, 0, (int)sampleframes);
         }
 
         private static string UInt32ToString(UInt32 input)

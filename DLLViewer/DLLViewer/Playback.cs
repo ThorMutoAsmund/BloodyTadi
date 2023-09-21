@@ -19,7 +19,7 @@ namespace DLLViewer
 
         public Playback(Dictionary<int, string> outputDriverNames, List<AudioNode> chain, Dictionary<string, string> vsts)
         {
-            this.audioFileReader = new AudioFileReader(@"example.mp3");
+            this.audioFileReader = new AudioFileReader(@"example.wav");
             this.outputDriverNames = outputDriverNames;
             this.Chain = chain;
             this.VSTs = vsts;
