@@ -1,16 +1,8 @@
-﻿using NAudio.CoreAudioApi;
-using NAudio.Wave;
+﻿using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace DLLViewer
 {
@@ -18,121 +10,114 @@ namespace DLLViewer
     // https://github.com/naudio/NAudio/blob/master/Docs/AsioPlayback.md
     // https://markheath.net/post/how-to-record-and-play-audio-at-same
 
-    class SavingWaveProvider : IWaveProvider, IDisposable
-    {
-        private readonly IWaveProvider sourceWaveProvider;
-        private Playback playback;
-        //private readonly WaveFileWriter writer;
-        private bool isWriterDisposed;
-
-        public SavingWaveProvider(IWaveProvider sourceWaveProvider, Playback playback)
-        {
-            this.sourceWaveProvider = sourceWaveProvider;
-            this.playback = playback;
-            //writer = new WaveFileWriter(wavFilePath, sourceWaveProvider.WaveFormat);
-        }
-
-        public int Read(byte[] buffer, int offset, int count)
-        {
-            var read = sourceWaveProvider.Read(buffer, offset, count);
-            if (count > 0 && !isWriterDisposed)
-            {
-                //writer.Write(buffer, offset, read);
-            }
-            if (count == 0)
-            {
-                Dispose(); // auto-dispose in case users forget
-            }
-            return read;
-        }
-
-        public WaveFormat WaveFormat { get { return sourceWaveProvider.WaveFormat; } }
-
-        public void Dispose()
-        {
-            if (!isWriterDisposed)
-            {
-                isWriterDisposed = true;
-                //writer.Dispose();
-            }
-        }
-    }
-
     public class Playback
     {
-        private AudioFileReader audioFile;
+        private AudioFileReader audioFileReader;
         private Dictionary<int, string> outputDriverNames;
         public List<AudioNode> Chain { get; private set; }
         public Dictionary<string, string> VSTs { get; private set; }
 
         public Playback(Dictionary<int, string> outputDriverNames, List<AudioNode> chain, Dictionary<string, string> vsts)
         {
-            this.audioFile = new AudioFileReader(@"c:\temp\example.mp3");
+            this.audioFileReader = new AudioFileReader(@"example.mp3");
             this.outputDriverNames = outputDriverNames;
             this.Chain = chain;
             this.VSTs = vsts;
         }
 
-        public void WaveOut(int? outputDeviceNum, int? inputDeviceNum, bool playTestSample = true)
+        public void WaveOut(OutputDeviceMode outputDeviceMode, int outputDeviceNum, InputDeviceMode inputDeviceMode, int inputDeviceNum)
         {
-            if (playTestSample)
+            if (outputDeviceMode == OutputDeviceMode.Unset)
             {
-                using (var outputDevice = new WaveOutEvent())
-                {
-                    outputDevice.Init(this.audioFile);
-                    outputDevice.Play();
-
-                    Console.ReadLine();
-
-                    outputDevice.Stop();
-                    outputDevice.Dispose();
-                    return;
-                }
+                outputDeviceNum = 0;
+            }
+            if (inputDeviceMode == InputDeviceMode.Unset)
+            {
+                inputDeviceNum = 0;
             }
 
-            using (var recorder = new WaveInEvent())
+            // things to be disposed
+            var disposeList = new List<IDisposable>();
+
+            // create input provider
+            IWaveProvider finalProvider;
+            IWaveIn recorder = null;
+
+            if (inputDeviceMode == InputDeviceMode.Demo)
             {
-                var bufferedWaveProvider = new BufferedWaveProvider(recorder.WaveFormat);
-                var savingWaveProvider = new SavingWaveProvider(bufferedWaveProvider, this);
+                finalProvider = this.audioFileReader;
+            }
+            else 
+            {
+                BufferedWaveProvider bufferedWaveProvider;
 
                 void RecorderOnDataAvailable(object sender, WaveInEventArgs waveInEventArgs)
                 {
                     bufferedWaveProvider.AddSamples(waveInEventArgs.Buffer, 0, waveInEventArgs.BytesRecorded);
                 }
 
+                recorder = new WaveInEvent();
+                bufferedWaveProvider = new BufferedWaveProvider(recorder.WaveFormat);
                 recorder.DataAvailable += RecorderOnDataAvailable;
+                finalProvider = bufferedWaveProvider;
+                disposeList.Add(recorder);
+            }
 
-                // set up playback
-                using (var player = new WaveOut())
+            // add plugins to chain
+            if (this.Chain.Count > 0)
+            {
+                var firstLink = this.Chain[0];
+                if (this.VSTs.ContainsKey(firstLink.UniqueID))
                 {
-                    player.Init(savingWaveProvider);
+                    var vstProvider = VstSampleProvider.Create(finalProvider, this.VSTs[firstLink.UniqueID]);
+                    if (vstProvider != null)
+                    {
+                        disposeList.Add(vstProvider);
+                        var conv = new SampleToWaveProvider16(vstProvider);
+                        finalProvider = conv;
+                    }
+                }
+            }
 
-                    player.Play();
-                    recorder.StartRecording();
+            // set up playback
+            using (var player = new WaveOutEvent())
+            {
+                player.Init(finalProvider);
+                player.Play();
+                recorder?.StartRecording();
 
-                    Console.ReadLine();
+                Console.ReadLine();
 
-                    recorder.StopRecording();
-                    player.Stop();
-                    savingWaveProvider.Dispose();
+                recorder?.StopRecording();
+                player.Stop();
+
+                foreach (var itemToDispose in disposeList)
+                {
+                    itemToDispose.Dispose();
                 }
             }
         }
 
-        public void Asio(int? outputDeviceNum, int? inputDeviceNum, bool playTestSample = false)
+        public void Asio(OutputDeviceMode outputDeviceMode, int outputDeviceNum, InputDeviceMode inputDeviceMode, int inputDeviceNum)
         {
-            outputDeviceNum = outputDeviceNum ?? 0;
-            inputDeviceNum = inputDeviceNum ?? 0;
-
-            if (!outputDriverNames.ContainsKey(outputDeviceNum.Value))
+            if (outputDeviceMode == OutputDeviceMode.Unset)
             {
-                Console.WriteLine($"Output device {outputDeviceNum.Value} not found.");
+                outputDeviceNum = 0;
+            }
+            if (inputDeviceMode == InputDeviceMode.Unset)
+            {
+                inputDeviceNum = 0;
+            }
+
+            if (!outputDriverNames.ContainsKey(outputDeviceNum))
+            {
+                Console.WriteLine($"Output device {outputDeviceNum} not found.");
                 return;
             }
 
             // https://github.com/naudio/NAudio/blob/master/Docs/AsioRecording.md
 
-            var asioOut = new AsioOut(outputDriverNames[outputDeviceNum.Value]);
+            var asioOut = new AsioOut(outputDriverNames[outputDeviceNum]);
 
             var inputChannelCount = asioOut.DriverInputChannelCount;
             var outputChannelCount = asioOut.DriverOutputChannelCount;
@@ -199,13 +184,13 @@ namespace DLLViewer
             asioOut.InputChannelOffset = inputChannelOffset;
             asioOut.AudioAvailable += OnAsioOutAudioAvailable;
             
-            if (playTestSample)
+            if (inputDeviceMode == InputDeviceMode.Demo)
             {
-                asioOut.Init(audioFile);
+                asioOut.Init(audioFileReader);
             }
             else
             {
-                asioOut.InitRecordAndPlayback(audioFile, recordChannelCount, sampleRate);
+                asioOut.InitRecordAndPlayback(audioFileReader, recordChannelCount, sampleRate);
             }
 
             asioOut.Play();

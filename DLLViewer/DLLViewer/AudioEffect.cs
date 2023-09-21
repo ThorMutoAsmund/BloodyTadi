@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace DLLViewer
 {
+    // See
+    // https://teragonaudio.com/article/How-to-make-your-own-VST-host.html
+
     public class AudioEffect
     {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -35,6 +38,7 @@ namespace DLLViewer
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate void ProcessDelegate(IntPtr effect, IntPtr inputs, IntPtr outputs, UInt32 sampleframes);
+        //delegate void ProcessDelegate(IntPtr effect, IntPtr inputs, IntPtr outputs, UInt32 sampleframes);
 
         private string filePath;
         private int hModule;
@@ -50,6 +54,8 @@ namespace DLLViewer
         private GetParameterDelegate getParameter;
         private DispatcherDelegate dispatcher;
         private IntPtrDispatcherDelegate intPtrDispatcher;
+        private ProcessDelegate process;
+        private ProcessDelegate processReplacing;
 
         public UInt32 NumParams => this.aeffect.numParams;
         public string UniqueID { get; private set; }
@@ -174,6 +180,8 @@ namespace DLLViewer
             effect.getParameter = Marshal.GetDelegateForFunctionPointer<GetParameterDelegate>(effect.aeffect.getParameter);
             effect.dispatcher = Marshal.GetDelegateForFunctionPointer<DispatcherDelegate>(effect.aeffect.dispatcher);
             effect.intPtrDispatcher = Marshal.GetDelegateForFunctionPointer<IntPtrDispatcherDelegate>(effect.aeffect.dispatcher);
+            effect.process = Marshal.GetDelegateForFunctionPointer<ProcessDelegate>(effect.aeffect.process);
+            effect.processReplacing = Marshal.GetDelegateForFunctionPointer<ProcessDelegate>(effect.aeffect.processReplacing);
 
             return effect;
         }
@@ -181,15 +189,6 @@ namespace DLLViewer
         ~AudioEffect()
         {
             Close();
-        }
-
-        public void Close()
-        {
-            if (this.hModule != 0)
-            {
-                Kernel32.FreeLibrary(this.hModule);
-                this.hModule = 0;
-            }
         }
 
         public void Describe()
@@ -240,7 +239,65 @@ namespace DLLViewer
         {
             // delegate UInt32 DispatcherDelegate(IntPtr effect, UInt32 opCode, UInt32 index, UInt32 value, StringBuilder ptr, float opt);
             IntPtr handle = Process.GetCurrentProcess().MainWindowHandle;
-            intPtrDispatcher(this.aeffectPtr, (UInt32)OpCode.effEditOpen, 0, 0, handle, 0);
+            intPtrDispatcher(this.aeffectPtr, (UInt32)OpCode.effOpen, 0, 0, handle, 0);
+        }
+
+        public void Close()
+        {
+            //this crashes
+            //if (this.aeffectPtr != null)
+            //{
+            //    IntPtr handle = Process.GetCurrentProcess().MainWindowHandle;
+            //    intPtrDispatcher(this.aeffectPtr, (UInt32)OpCode.effClose, 0, 0, handle, 0);
+            //}
+
+            if (this.hModule != 0)
+            {
+                Kernel32.FreeLibrary(this.hModule);
+                this.hModule = 0;
+            }
+        }
+
+        public void EditOpen()
+        {
+            // delegate UInt32 DispatcherDelegate(IntPtr effect, UInt32 opCode, UInt32 index, UInt32 value, StringBuilder ptr, float opt);
+            intPtrDispatcher(this.aeffectPtr, (UInt32)OpCode.effOpen, 0, 0, IntPtr.Zero, 0);
+        }
+
+        public void VstProcess()
+        {
+            //process(this.aeffectPtr, IntPtr inputs, IntPtr outputs, UInt32 sampleframes);
+        }
+
+        public unsafe void VstProcessReplacing(float[][] inputs, float[][] outputs, UInt32 sampleframes)
+        {
+            //inputs = (float**)malloc(sizeof(float**) * numChannels);
+            //outputs = (float**)malloc(sizeof(float**) * numChannels);
+            //for (int channel = 0; channel < numChannels; channel++)
+            //{
+            //    inputs[i] = (float*)malloc(sizeof(float*) * blocksize);
+            //    outputs[i] = (float*)malloc(sizeof(float*) * blocksize);
+            //}
+
+            var numChannels = 1;
+            var size = (int)sampleframes * Marshal.SizeOf<float>();
+
+            float** inp = (float**)Marshal.AllocHGlobal(numChannels * Marshal.SizeOf<IntPtr>());
+
+            inp[0] = (float*)Marshal.AllocHGlobal(size);
+            inp[1] = (float*)Marshal.AllocHGlobal(size);
+            Marshal.Copy(inputs[0], 0, (IntPtr)(inp[0]), (int)sampleframes);
+            Marshal.Copy(inputs[1], 0, (IntPtr)(inp[1]), (int)sampleframes);
+
+            float** outp = (float**)Marshal.AllocHGlobal(numChannels * Marshal.SizeOf<IntPtr>());
+            outp[0] = (float*)Marshal.AllocHGlobal(size);
+            outp[1] = (float*)Marshal.AllocHGlobal(size);
+
+            //processReplacing(this.aeffectPtr, (IntPtr)(inp[0]), (IntPtr)(outp[0]), sampleframes);
+            processReplacing(this.aeffectPtr, (IntPtr)inp, (IntPtr)outp, sampleframes);
+
+            Marshal.Copy((IntPtr)(outp[0]), outputs[0], 0, (int)sampleframes);
+            Marshal.Copy((IntPtr)(outp[1]), outputs[1], 0, (int)sampleframes);
         }
 
         private static string UInt32ToString(UInt32 input)

@@ -29,8 +29,10 @@ namespace DLLViewer
         static Dictionary<int,string> inputDriverNames = new Dictionary<int, string>();
         static Dictionary<int, string> outputDriverNames = new Dictionary<int, string>();
         static Dictionary<string, string> vsts = new Dictionary<string, string>();
-        static int? outputDeviceNum;
-        static int? inputDeviceNum;
+        static OutputDeviceMode outputDeviceMode = OutputDeviceMode.Unset;
+        static int outputDeviceNum;
+        static InputDeviceMode inputDeviceMode = InputDeviceMode.Unset;
+        static int inputDeviceNum;
         static List<AudioNode> chain = new List<AudioNode>();
 
         [STAThread]
@@ -46,6 +48,7 @@ namespace DLLViewer
                 Console.WriteLine("  /I      List input devices");
                 Console.WriteLine("  /O:n    Select output device n");
                 Console.WriteLine("  /I:n    Select input device n");
+                Console.WriteLine("  /I:d    Play demo sample");
                 Console.WriteLine("  /L      List VST plugins with details in given path (and/or matching filename)");
                 Console.WriteLine("  /DW     Use WaveOut");
                 Console.WriteLine("  /DD     Use DirectSound");
@@ -92,11 +95,12 @@ namespace DLLViewer
                                 else
                                 {
                                     param = param.Substring(2);
-                                    if (!Int32.TryParse(param, out var outputDeviceNum))
+                                    if (!Int32.TryParse(param, out outputDeviceNum))
                                     {
                                         Console.WriteLine($"Error parsing {param}.");
                                         return;
                                     }
+                                    outputDeviceMode = OutputDeviceMode.Driver;
                                 }
                                 break;
                             }
@@ -110,10 +114,18 @@ namespace DLLViewer
                                 else
                                 {
                                     param = param.Substring(2);
-                                    if (!Int32.TryParse(param, out var inputDeviceNum))
+                                    if (param.ToLowerInvariant() == "d")
                                     {
-                                        Console.WriteLine($"Error parsing {param}.");
-                                        return;
+                                        inputDeviceMode = InputDeviceMode.Demo;
+                                    }
+                                    else
+                                    {
+                                        if (!Int32.TryParse(param, out inputDeviceNum))
+                                        {
+                                            Console.WriteLine($"Error parsing {param}.");
+                                            return;
+                                        }
+                                        inputDeviceMode = InputDeviceMode.Driver;
                                     }
                                 }
                                 break;
@@ -256,7 +268,7 @@ namespace DLLViewer
             {
                 case AudioSystem.ASIO:
                     Console.WriteLine($"Using {audioSystem}");
-                    playback.Asio(outputDeviceNum, inputDeviceNum, playTestSample: false);
+                    playback.Asio(outputDeviceMode, outputDeviceNum, inputDeviceMode, inputDeviceNum);
                     break;
                 case AudioSystem.WASAPI:
                     Console.WriteLine($"{audioSystem} not supported yet");
@@ -266,7 +278,7 @@ namespace DLLViewer
                     break;
                 case AudioSystem.WaveOut:
                     Console.WriteLine($"Using {audioSystem}");
-                    playback.WaveOut(outputDeviceNum, inputDeviceNum, playTestSample: false);
+                    playback.WaveOut(outputDeviceMode, outputDeviceNum, inputDeviceMode, inputDeviceNum);
                     break;
             }
 
@@ -285,7 +297,6 @@ namespace DLLViewer
                     first = false;
                     Console.WriteLine($"--------------------------------");
                     Console.WriteLine($"[{Path.GetFileName(filePath)}]");
-
                 }
 
                 var effect = AudioEffect.Create(filePath);
@@ -306,7 +317,6 @@ namespace DLLViewer
                 }
 
                 vsts[effect.UniqueID] = filePath;
-                //effect.Open();
             }
         }
 
