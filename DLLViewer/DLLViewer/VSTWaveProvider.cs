@@ -4,47 +4,14 @@ using System;
 
 namespace DLLViewer
 {
-    public class Pcm16BitToSampleProvider2 : SampleProviderConverterBase
-    {
-        /// <summary>
-        /// Initialises a new instance of Pcm16BitToSampleProvider
-        /// </summary>
-        /// <param name="source">Source wave provider</param>
-        public Pcm16BitToSampleProvider2(IWaveProvider source)
-            : base(source)
-        {
-        }
-
-        /// <summary>
-        /// Reads samples from this sample provider
-        /// </summary>
-        /// <param name="buffer">Sample buffer</param>
-        /// <param name="offset">Offset into sample buffer</param>
-        /// <param name="count">Samples required</param>
-        /// <returns>Number of samples read</returns>
-        public override int Read(float[] buffer, int offset, int count)
-        {
-            int sourceBytesRequired = count * 4;
-            EnsureSourceBuffer(sourceBytesRequired);
-            int bytesRead = source.Read(sourceBuffer, 0, sourceBytesRequired);
-            int outIndex = offset;
-            for (int n = 0; n < bytesRead; n += 4)
-            {
-                var f = BitConverter.ToSingle(sourceBuffer, n);
-                buffer[outIndex++] = f;// (f - 32768) / 32768f; // HERE!
-            }
-            return bytesRead / 4;
-        }
-    }
-
     class VstSampleProvider : ISampleProvider, IDisposable
     {
-        private IWaveProvider sourceWaveProvider;
         private ISampleProvider provider;
+        //private ISampleProvider provider;
         private bool isWriterDisposed;
         private AudioEffect effect;
 
-        public WaveFormat WaveFormat => this.provider.WaveFormat;
+        public WaveFormat WaveFormat => WaveFormat.CreateIeeeFloatWaveFormat(this.provider.WaveFormat.SampleRate, 2);
 
         public static VstSampleProvider Create(IWaveProvider sourceWaveProvider, string filePath)
         {
@@ -61,11 +28,17 @@ namespace DLLViewer
         
         public VstSampleProvider(IWaveProvider sourceWaveProvider, AudioEffect effect)
         {
-            this.sourceWaveProvider = sourceWaveProvider;
             this.effect = effect;
             this.effect.Open();
 
-            this.provider = new Pcm16BitToSampleProvider2(this.sourceWaveProvider);
+            if (sourceWaveProvider.WaveFormat.Encoding == WaveFormatEncoding.Pcm)
+            {
+                this.provider = new Pcm16BitToSampleProvider(sourceWaveProvider);
+            }
+            else
+            {
+                this.provider = new WaveToSampleProvider(sourceWaveProvider);
+            }
         }
 
         private float[] bin;
@@ -83,45 +56,39 @@ namespace DLLViewer
 
             if (count > 0 && !this.isWriterDisposed)
             {
-                Array.Resize(ref this.bin, count);
-                read = this.provider.Read(this.bin, 0, count);
-                 
                 if (this.provider.WaveFormat.Channels == 1)
                 {
+                    Array.Resize(ref this.bin, count/2);
+                    read = this.provider.Read(this.bin, 0, count/2);
+
                     this.binL = this.bin;
-                    Array.Resize(ref this.binR, count);
-                    Array.Copy(this.binL, this.binR, count);
-                    this.boutL = buffer;
-                    Array.Resize(ref this.boutR, count);
+                    Array.Resize(ref this.binR, count/2);
+                    Array.Copy(this.binL, this.binR, count/2);
+                    Array.Resize(ref this.boutL, count/2);
+                    Array.Resize(ref this.boutR, count/2);
                 }
                 else if (this.provider.WaveFormat.Channels == 2)
                 {
+                    Array.Resize(ref this.bin, count);
+                    read = this.provider.Read(this.bin, 0, count);
+
                     Array.Resize(ref this.binL, count / 2);
                     Array.Resize(ref this.binR, count / 2);
-                    Array.Resize(ref this.boutL, count / 2);
-                    Array.Resize(ref this.boutR, count / 2);
                     for (int i = 0; i < count; i += 2)
                     {
                         this.binL[i / 2] = this.bin[i];
                         this.binR[i / 2] = this.bin[i+1];
                     }
+                    Array.Resize(ref this.boutL, count / 2);
+                    Array.Resize(ref this.boutR, count / 2);
                 }
 
-                //this.effect.VstProcessReplacing(new float[2][] { this.binL, this.binR }, new float[2][] { this.boutL, this.boutR }, (UInt32)(count / this.provider.WaveFormat.Channels));
-                boutL = binL;
-                boutR = binR;
+                this.effect.VstProcessReplacing(new float[2][] { this.binL, this.binR }, new float[2][] { this.boutL, this.boutR }, (UInt32)(count / 2));
 
-                if (this.provider.WaveFormat.Channels == 2)
+                for (int i = 0; i < count; i += 2)
                 {
-                    for (int i = 0; i < count; i += 2)
-                    {
-                        buffer[i] = this.boutL[i / 2];
-                        buffer[i+1] = this.boutR[i / 2];
-                    }
-                }
-                else
-                {
-                    Array.Copy(this.boutL, buffer, count);
+                    buffer[i] = this.boutL[i / 2];
+                    buffer[i+1] = this.boutR[i / 2];
                 }
 
                 read = count;
