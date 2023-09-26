@@ -8,7 +8,7 @@ namespace DLLViewer
     {
         private ISampleProvider provider;
         private bool isWriterDisposed;
-        private AudioEffect effect;
+        public AudioEffect Effect { get; private set; }
 
         public WaveFormat WaveFormat => WaveFormat.CreateIeeeFloatWaveFormat(this.provider.WaveFormat.SampleRate, 2);
 
@@ -27,8 +27,8 @@ namespace DLLViewer
         
         public VstSampleProvider(IWaveProvider sourceWaveProvider, AudioEffect effect)
         {
-            this.effect = effect;
-            this.effect.Open();
+            this.Effect = effect;
+            this.Effect.Open();
 
             this.provider = sourceWaveProvider.ToSampleProvider();
         }
@@ -67,7 +67,7 @@ namespace DLLViewer
                 Array.Resize(ref this.boutL, count / 2);                
                 Array.Resize(ref this.boutR, count / 2);
 
-                this.effect.VstProcessReplacing(buffer, this.binR, this.boutL, this.boutR, (UInt32)(count / 2));
+                this.Effect.VstProcessReplacing(buffer, this.binR, this.boutL, this.boutR, (UInt32)(count / 2));
 
                 for (int i = 0; i < count; i += 2)
                 {
@@ -91,7 +91,7 @@ namespace DLLViewer
             if (!this.isWriterDisposed)
             {
                 this.isWriterDisposed = true;
-                this.effect.Close();
+                this.Effect.Close();
                 //writer.Dispose();
             }
         }

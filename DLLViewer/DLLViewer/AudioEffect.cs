@@ -57,7 +57,6 @@ namespace DLLViewer
         private GetParameterDelegate getParameter;
         private DispatcherDelegate dispatcher;
         private IntPtrDispatcherDelegate intPtrDispatcher;
-        private ProcessDelegate process;
         private ProcessDelegate processReplacing;
 
         public UInt32 NumParams => this.aeffect.numParams;
@@ -185,7 +184,6 @@ namespace DLLViewer
             effect.getParameter = Marshal.GetDelegateForFunctionPointer<GetParameterDelegate>(effect.aeffect.getParameter);
             effect.dispatcher = Marshal.GetDelegateForFunctionPointer<DispatcherDelegate>(effect.aeffect.dispatcher);
             effect.intPtrDispatcher = Marshal.GetDelegateForFunctionPointer<IntPtrDispatcherDelegate>(effect.aeffect.dispatcher);
-            effect.process = Marshal.GetDelegateForFunctionPointer<ProcessDelegate>(effect.aeffect.process);
             effect.processReplacing = Marshal.GetDelegateForFunctionPointer<ProcessDelegate>(effect.aeffect.processReplacing);
 
             return effect;
@@ -210,11 +208,79 @@ namespace DLLViewer
             Console.WriteLine($"version = {this.aeffect.version}");
         }
 
+        public void ListParameters(bool withvalues = false)
+        {
+            if (this.dispatcher == null)
+            {
+                return;
+            }
+
+            Console.WriteLine($"{this.NumParams} parameters");
+            for (UInt32 i = 0; i < this.NumParams; ++i)
+            {
+                if (withvalues)
+                {
+                    var disp = $"Param {i} = {this.GetParamName(i)}";
+                    Console.Write(disp);
+                    if (disp.Length < 24)
+                    {
+                        Console.Write("                        ".Substring(disp.Length));
+                    }
+                    Console.WriteLine(GetParamDisplay(i));
+                }
+                else
+                {
+                    Console.WriteLine($"Param {i} = {this.GetParamName(i)}");
+                }
+
+            }
+        }
+
         public string GetParamName(UInt32 index)
         {
+            if (this.dispatcher == null)
+            {
+                return String.Empty;
+            }
+
             StringBuilder label = new StringBuilder(new String(' ', 256));
-            dispatcher(this.aeffectPtr, (UInt32)OpCode.effGetParamName, index, 0, label, 0);
+            this.dispatcher(this.aeffectPtr, (UInt32)OpCode.effGetParamName, index, 0, label, 0);
             return label.ToString();
+        }
+
+        public string GetParamDisplay(UInt32 index)
+        {
+            if (this.dispatcher == null)
+            {
+                return String.Empty;
+            }
+
+            StringBuilder label = new StringBuilder(new String(' ', 256));
+            this.dispatcher(this.aeffectPtr, (UInt32)OpCode.effGetParamDisplay, index, 0, label, 0);
+            return label.ToString();
+        }
+        
+        public string GetParamLabel(UInt32 index)
+        {
+            if (this.dispatcher == null)
+            {
+                return String.Empty;
+            }
+
+            StringBuilder label = new StringBuilder(new String(' ', 256));
+            this.dispatcher(this.aeffectPtr, (UInt32)OpCode.effGetParamLabel, index, 0, label, 0);
+            return label.ToString();
+        }
+        
+        public void SetParameter(UInt32 index, float parameter)
+        {
+            if (this.setParameter == null)
+            {
+                return;
+            }
+
+            // IntPtr effect, UInt32 index, float parameter);
+            this.setParameter(this.aeffectPtr, index, parameter);
         }
 
         //public void Test()
@@ -242,9 +308,14 @@ namespace DLLViewer
 
         public void Open()
         {
+            if (this.intPtrDispatcher == null)
+            {
+                return;
+            }
+
             // delegate UInt32 DispatcherDelegate(IntPtr effect, UInt32 opCode, UInt32 index, UInt32 value, StringBuilder ptr, float opt);
             IntPtr handle = Process.GetCurrentProcess().MainWindowHandle;
-            intPtrDispatcher(this.aeffectPtr, (UInt32)OpCode.effOpen, 0, 0, handle, 0);
+            this.intPtrDispatcher(this.aeffectPtr, (UInt32)OpCode.effOpen, 0, 0, handle, 0);
         }
 
         public void Close()
@@ -265,8 +336,13 @@ namespace DLLViewer
 
         public void EditOpen()
         {
+            if (this.intPtrDispatcher == null)
+            {
+                return;
+            }
+
             // delegate UInt32 DispatcherDelegate(IntPtr effect, UInt32 opCode, UInt32 index, UInt32 value, StringBuilder ptr, float opt);
-            intPtrDispatcher(this.aeffectPtr, (UInt32)OpCode.effOpen, 0, 0, IntPtr.Zero, 0);
+            this.intPtrDispatcher(this.aeffectPtr, (UInt32)OpCode.effOpen, 0, 0, IntPtr.Zero, 0);
         }
 
         public void VstProcess()

@@ -285,7 +285,8 @@ namespace DLLViewer
                     Console.WriteLine($"{audioSystem} not supported yet");
                     break;
                 case AudioSystem.DirectSound:
-                    Console.WriteLine($"{audioSystem} not supported yet");
+                    Console.WriteLine($"Using {audioSystem}");
+                    playback.DirectSound(outputDeviceMode, outputDeviceNum, inputDeviceMode, inputDeviceNum);
                     break;
                 case AudioSystem.WaveOut:
                     Console.WriteLine($"Using {audioSystem}");
@@ -320,11 +321,7 @@ namespace DLLViewer
                 if (showInfo)
                 {
                     Console.WriteLine($"Unique ID = {effect.UniqueID}");
-                    Console.WriteLine($"{effect.NumParams} parameters");
-                    for (UInt32 i = 0; i < effect.NumParams; ++i)
-                    {
-                        Console.WriteLine($"Param {i} = {effect.GetParamName(i)}");
-                    }
+                    effect.ListParameters();
                 }
 
                 vsts[effect.UniqueID] = filePath;
